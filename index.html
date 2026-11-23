@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مجموعات مركز هاتف شين - By:Ashraf Bala</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f3f6fa;
+            --primary-dark: #1d3566;
+            --primary-blue: #294885;
+            --accent-gold: #f59e0b;
+            --accent-green: #0d8a53;
+            --accent-red: #dc2626;
+            --accent-orange: #ea580c;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); padding: 20px; min-height: 100vh; }
+        .container { max-width: 1260px; margin: 0 auto; }
+
+        /* Login Screen */
+        .login-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #162b54 0%, #274682 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 20000;
+            padding: 20px;
+        }
+        .login-card {
+            background: white;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 440px;
+            padding: 32px 28px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+        .login-logo {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: var(--primary-dark);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 800;
+            margin: 0 auto 14px auto;
+        }
+        .login-card h1 { font-size: 22px; font-weight: 800; color: var(--primary-dark); margin-bottom: 4px; }
+        .login-card p { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; font-weight: 700; }
+
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px; background: white; padding: 14px 20px; border-radius: 18px; border: 1px solid #e2e8f0; }
+        .top-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .sync-badge { background: #dcfce7; color: #166534; padding: 7px 13px; border-radius: 12px; font-size: 13px; font-weight: 700; }
+        .sync-badge.loading { background: #fef3c7; color: #92400e; }
+        .sync-badge.error { background: #fee2e2; color: #991b1b; }
+        .role-badge { background: #eff6ff; color: #1d4ed8; padding: 7px 13px; border-radius: 12px; font-size: 13px; font-weight: 800; border: 1px solid #bfdbfe; }
+        .icon-btn { background: #2f436e; color: white; border: none; padding: 9px 14px; border-radius: 11px; cursor: pointer; font-weight: 700; font-size: 13px; transition: 0.2s; }
+        .icon-btn:hover { opacity: 0.92; }
+        .icon-btn.green { background: #0d8a53; }
+        .icon-btn.gold { background: #d97706; }
+        .icon-btn.red { background: #dc2626; }
+
+        .brand-title { display: flex; align-items: center; gap: 12px; }
+        .brand-title h2 { font-size: 19px; font-weight: 800; color: var(--primary-dark); }
+        .brand-title small { color: var(--text-muted); font-weight: 800; }
+        .brand-badge { background: var(--primary-dark); color: white; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; }
+
+        .hero-card { background: linear-gradient(135deg, #1b3668 0%, #2b4c8c 100%); color: white; border-radius: 22px; padding: 24px 28px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 18px; }
+        .hero-text h1 { font-size: 24px; font-weight: 800; margin-bottom: 5px; }
+        .hero-text p { color: #cbd5e1; font-size: 14px; }
+        .hero-stats { display: flex; gap: 12px; flex-wrap: wrap; }
+        .stat-box { background: rgba(255, 255, 255, 0.12); padding: 11px 16px; border-radius: 16px; text-align: center; min-width: 105px; }
+        .stat-box span { display: block; font-size: 21px; font-weight: 800; color: #fbbf24; }
+        .stat-box small { font-size: 12px; color: #e2e8f0; }
+
+        .action-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-bottom: 24px; }
+        .add-group-bar { background: white; border: 2px solid #f59e0b; border-radius: 18px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
+        .add-group-bar:hover { background: #fffbeb; transform: translateY(-2px); }
+        .plus-circle { width: 44px; height: 44px; background: #f59e0b; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: bold; flex-shrink: 0; }
+
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+        .search-input { padding: 10px 15px; border-radius: 12px; border: 1px solid #cbd5e1; width: 280px; font-size: 14px; background: white; }
+
+        .groups-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 18px; margin-bottom: 28px; }
+        .group-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.04); border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between; }
+        .group-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 10px; }
+        .group-name { font-size: 18px; font-weight: 800; color: var(--primary-dark); }
+        .group-loc { display: inline-block; background: #f1f5f9; color: #334155; font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 8px; margin-top: 5px; }
+        .group-meta { font-size: 13px; color: var(--text-muted); margin-top: 8px; line-height: 1.7; }
+        .mini-counts { display: flex; gap: 8px; flex-direction: column; text-align: center; }
+        .vacant-badge { background: linear-gradient(135deg, #0d8a53 0%, #10b981 100%); color: white; padding: 6px 12px; border-radius: 12px; min-width: 82px; }
+        .vacant-badge.zero { background: #64748b; }
+        .faulty-badge { background: #fef2f2; border: 1px solid #fca5a5; color: #b91c1c; padding: 4px 10px; border-radius: 10px; font-size: 12px; font-weight: 800; }
+
+        .progress-bar-bg { width: 100%; height: 8px; background: #e2e8f0; border-radius: 10px; overflow: hidden; margin-bottom: 14px; }
+        .progress-bar-fill { height: 100%; background: #10b981; transition: width 0.3s ease; }
+        .group-card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-manage { flex: 1; background: #f1f5f9; color: var(--primary-dark); border: none; padding: 10px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 13px; }
+        .btn-manage:hover { background: var(--primary-dark); color: white; }
+        .btn-delete-group { background: #fee2e2; color: #dc2626; border: none; padding: 10px 12px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+
+        .activity-panel { background: white; border-radius: 20px; padding: 20px; border: 1px solid #e2e8f0; margin-bottom: 24px; }
+        .activity-item { padding: 10px 14px; border-radius: 12px; background: #f8fafc; border-right: 4px solid var(--primary-blue); margin-bottom: 8px; font-size: 13px; line-height: 1.6; }
+        .activity-item strong { color: var(--primary-dark); }
+
+        .logs-banner { background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%); color: white; border-radius: 20px; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .app-footer { text-align: center; margin-top: 28px; padding: 16px; color: var(--text-muted); font-size: 14px; font-weight: 700; border-top: 1px solid #e2e8f0; }
+        .app-footer span { color: var(--primary-dark); font-weight: 800; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.65); display: none; justify-content: center; align-items: center; z-index: 9999; padding: 18px; }
+        .modal-box { background: white; border-radius: 22px; width: 100%; max-width: 900px; max-height: 90vh; overflow-y: auto; padding: 24px; }
+        .modal-box.small { max-width: 500px; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 18px; gap: 10px; }
+        .close-btn { background: #f1f5f9; border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 20px; cursor: pointer; font-weight: bold; }
+
+        .form-group { margin-bottom: 14px; text-align: right; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 6px; font-size: 14px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 13px; border-radius: 12px; border: 1px solid #cbd5e1; font-size: 14px; }
+        .inline-error { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; padding: 10px 14px; border-radius: 12px; font-size: 13px; font-weight: 700; margin-bottom: 12px; display: none; text-align: right; }
+        .btn-primary { width: 100%; background: var(--primary-dark); color: white; border: none; padding: 12px; border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; }
+        .btn-primary:hover { opacity: 0.93; }
+        .btn-secondary { background: #e2e8f0; color: #1e293b; border: none; padding: 7px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; }
+
+        .ext-info-banner { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e3a8a; padding: 12px 14px; border-radius: 14px; margin-bottom: 14px; font-size: 13px; font-weight: 700; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        .box-section { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 15px; margin-bottom: 15px; }
+        .box-title { font-size: 15px; font-weight: 800; color: var(--primary-dark); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .ext-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 11px; }
+
+        .ext-item { border-radius: 14px; padding: 11px; text-align: center; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+        .ext-item.vacant { background: #ecfdf5; border-color: #10b981; color: #065f46; }
+        .ext-item.reserved { background: #fef2f2; border-color: #ef4444; color: #991b1b; }
+        .ext-item.faulty { background: #fff7ed; border-color: #f97316; color: #9a3412; }
+
+        .ext-num { font-size: 15px; font-weight: 800; }
+        .ext-box-tag { font-size: 11px; font-weight: 700; margin-bottom: 5px; opacity: 0.9; }
+        .ext-status { font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 8px; display: inline-block; margin-bottom: 6px; }
+        .vacant .ext-status { background: #10b981; color: white; }
+        .reserved .ext-status { background: #ef4444; color: white; }
+        .faulty .ext-status { background: #ea580c; color: white; }
+        .ext-detail { font-size: 11px; font-weight: 700; margin-top: 3px; word-break: break-word; }
+
+        .log-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .log-table th, .log-table td { padding: 9px; border-bottom: 1px solid #e2e8f0; text-align: right; }
+        .toast { position: fixed; bottom: 20px; left: 20px; background: #0d8a53; color: white; padding: 12px 20px; border-radius: 12px; font-weight: 700; display: none; z-index: 30000; }
+        .hidden-role { display: none !important; }
+    </style>
+</head>
+<body>
+
+<div class="toast" id="toastMsg">تمت العملية بنجاح!</div>
+
+<!-- Login Screen -->
+<div class="login-screen" id="loginScreen">
+    <div class="login-card">
+        <div class="login-logo">شين</div>
+        <h1>مجموعات مركز هاتف شين</h1>
+        <p>By:Ashraf Bala — تسجيل الدخول إلى النظام</p>
+        <div class="inline-error" id="loginError"></div>
+        <div class="form-group">
+            <label>اسم المستخدم:</label>
+            <input type="text" id="loginUsername" placeholder="أدخل اسم المستخدم">
+        </div>
+        <div class="form-group">
+            <label>كلمة المرور:</label>
+            <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
+        </div>
+        <button type="button" class="btn-primary" id="loginSubmitBtn">دخول إلى الموقع</button>
+    </div>
+</div>
+
+<div class="container" id="mainAppContainer" style="display:none;">
+    <div class="top-bar">
+        <div class="top-actions">
+            <span class="sync-badge loading" id="syncStatus">⏳ جاري الاتصال بالسحابة...</span>
+            <span class="role-badge" id="currentUserBadge">الحساب: الأدمن الرئيسي</span>
+            <button type="button" class="icon-btn admin-only" id="btnOpenUsers">👥 إدارة الأشخاص</button>
+            <button type="button" class="icon-btn green" id="btnExportExcel">📊 تصدير Excel</button>
+            <button type="button" class="icon-btn" id="btnRefreshCloud">🔄 تحديث</button>
+            <button type="button" class="icon-btn red" id="btnLogout">🚪 خروج</button>
+        </div>
+        <div class="brand-title">
+            <div>
+                <h2>مجموعات مركز هاتف شين</h2>
+                <small>By:Ashraf Bala</small>
+            </div>
+            <div class="brand-badge">شين</div>
+        </div>
+    </div>
+
+    <div class="hero-card">
+        <div class="hero-text">
+            <h1>مجموعات مركز هاتف شين</h1>
+            <p>إدارة المجموعات والعلب والدواخل والحجوزات والأعطال — By:Ashraf Bala</p>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-box"><span id="totalGroupsStat">0</span><small>المجموعات</small></div>
+            <div class="stat-box"><span id="totalVacantStat" style="color: #34d399;">0</span><small>شاغر</small></div>
+            <div class="stat-box"><span id="totalReservedStat" style="color: #f87171;">0</span><small>محجوز</small></div>
+            <div class="stat-box"><span id="totalFaultyStat" style="color: #fb923c;">0</span><small>عاطل</small></div>
+        </div>
+    </div>
+
+    <div class="action-strip">
+        <div class="add-group-bar admin-only" id="cardOpenAddGroup">
+            <div>
+                <h3>إضافة مجموعة جديدة</h3>
+                <p>الموقع، عدد العلب، عدد الدواخل، ومواقع العلب</p>
+            </div>
+            <div class="plus-circle">+</div>
+        </div>
+
+        <div class="add-group-bar" style="border-color:#294885;" id="cardOpenAddExt">
+            <div>
+                <h3>إضافة داخل جديد</h3>
+                <p>إضافة داخل إلى مجموعة محددة وربطه بعلبة</p>
+            </div>
+            <div class="plus-circle" style="background:#294885;">+</div>
+        </div>
+    </div>
+
+    <div class="section-header">
+        <h2>المجموعات المسجلة</h2>
+        <input type="text" class="search-input" id="searchInput" placeholder="🔍 ابحث عن اسم مجموعة أو موقع...">
+    </div>
+
+    <div class="groups-grid" id="groupsGrid"></div>
+
+    <div class="activity-panel">
+        <h3 style="margin-bottom:10px; color:var(--primary-dark);">آخر تعديلات الأشخاص على الدواخل</h3>
+        <div id="recentActivityList"></div>
+    </div>
+
+    <div class="logs-banner" id="bannerOpenLogs">
+        <div>
+            <h3>سجل التغييرات والحركات الكامل</h3>
+            <p>عرض كافة الحركات: من قام بالتعديل، المجموعة، العلبة، الداخل، الحالة، الرقم/النحاسية أو العطل، والسبب</p>
+        </div>
+        <div style="font-size: 24px;">📋</div>
+    </div>
+
+    <footer class="app-footer">
+        مجموعات مركز هاتف شين — <span>By:Ashraf Bala</span>
+    </footer>
+</div>
+
+<!-- Modal 1: Add Group -->
+<div class="modal-overlay" id="addGroupModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>إضافة مجموعة جديدة</h3>
+            <button type="button" class="close-btn" data-close="addGroupModal">×</button>
+        </div>
+        <div class="inline-error" id="addGroupError"></div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
+            <div class="form-group">
+                <label>اسم أو رقم المجموعة:</label>
+                <input type="text" id="newGroupName" placeholder="مثال: مجموعة 1">
+            </div>
+            <div class="form-group">
+                <label>موقع المجموعة:</label>
+                <input type="text" id="newGroupLocation" placeholder="مثال: شارع الأطباء / وسط شين">
+            </div>
+            <div class="form-group">
+                <label>عدد العلب في المجموعة:</label>
+                <input type="number" id="newGroupBoxesCount" min="1" max="200" value="2">
+            </div>
+            <div class="form-group">
+                <label>عدد دواخل المجموعة:</label>
+                <input type="number" id="newGroupExtensionsCount" min="1" max="1000" value="20">
+            </div>
+            <div class="form-group">
+                <label>الحالة الافتراضية للدواخل:</label>
+                <select id="newGroupDefaultStatus">
+                    <option value="vacant">شاغر</option>
+                    <option value="reserved">محجوز</option>
+                    <option value="faulty">عاطل</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>مواقع العلب داخل المجموعة:</label>
+            <div id="boxLocationsContainer" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:10px;"></div>
+        </div>
+        <button type="button" class="btn-primary" id="btnCreateGroup">حفظ وإضافة المجموعة</button>
+    </div>
+</div>
+
+<!-- Modal 2: Add Single Extension -->
+<div class="modal-overlay" id="addExtModal">
+    <div class="modal-box small">
+        <div class="modal-header">
+            <h3>إضافة داخل جديد</h3>
+            <button type="button" class="close-btn" data-close="addExtModal">×</button>
+        </div>
+        <div class="inline-error" id="addExtError"></div>
+        <div class="form-group">
+            <label>اختر المجموعة:</label>
+            <select id="addExtGroupSelect"></select>
+        </div>
+        <div class="form-group">
+            <label>اختر العلبة:</label>
+            <select id="addExtBoxSelect"></select>
+        </div>
+        <div class="form-group">
+            <label>رقم الداخل (اختياري - يُملأ تلقائياً إذا تُرك فارغاً):</label>
+            <input type="number" id="addExtNumberInput" min="1" placeholder="مثال: 25">
+        </div>
+        <div class="form-group">
+            <label>الحالة الأولية:</label>
+            <select id="addExtStatusSelect">
+                <option value="vacant">شاغر</option>
+                <option value="reserved">محجوز</option>
+                <option value="faulty">عاطل</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>ملاحظة / تفاصيل:</label>
+            <input type="text" id="addExtNoteInput" placeholder="مثال: إضافة داخل جديد">
+        </div>
+        <button type="button" class="btn-primary" id="btnSaveSingleExt">إضافة الداخل</button>
+    </div>
+</div>
+
+<!-- Modal 3: Group Details -->
+<div class="modal-overlay" id="groupDetailsModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <div>
+                <h3 id="detailGroupTitle">تفاصيل المجموعة</h3>
+                <small id="detailGroupSummary" style="color: var(--text-muted);"></small>
+            </div>
+            <button type="button" class="close-btn" data-close="groupDetailsModal">×</button>
+        </div>
+        <div id="extensionsByBoxContainer"></div>
+    </div>
+</div>
+
+<!-- Modal 4: Edit Extension -->
+<div class="modal-overlay" id="editExtModal">
+    <div class="modal-box small">
+        <div class="modal-header">
+            <h3 id="editExtTitle">تعديل الداخل</h3>
+            <button type="button" class="close-btn" data-close="editExtModal">×</button>
+        </div>
+        <div class="ext-info-banner" id="editExtLocationInfo"></div>
+        <div class="inline-error" id="editExtError"></div>
+
+        <div class="form-group">
+            <label>الحالة الجديدة للداخل:</label>
+            <select id="editExtStatus">
+                <option value="vacant">شاغر</option>
+                <option value="reserved">محجوز</option>
+                <option value="faulty">عاطل</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>نقل إلى مجموعة:</label>
+            <select id="editExtTargetGroup"></select>
+        </div>
+
+        <div class="form-group">
+            <label>العلبة التابع لها الداخل:</label>
+            <select id="editExtTargetBox"></select>
+        </div>
+
+        <div class="form-group">
+            <label>رقم الداخل الجديد (اختياري):</label>
+            <input type="number" id="editExtNewNumber" min="1">
+        </div>
+
+        <div id="reservedFieldsBlock" style="display:none; background:#fef2f2; padding:12px; border-radius:14px; margin-bottom:14px; border:1px solid #fecaca;">
+            <div class="form-group">
+                <label>نوع الحجز:</label>
+                <select id="editExtReserveType">
+                    <option value="phone">رقم أرضي محجوز</option>
+                    <option value="copper">نحاسية (بدون رقم أرضي / نحاسية المصرف)</option>
+                </select>
+            </div>
+            <div class="form-group" id="phoneNumberGroup">
+                <label>الرقم الأرضي المحجوز:</label>
+                <input type="text" id="editExtPhoneNumber" placeholder="مثال: 031-xxxxxxx أو رقم المشترك">
+            </div>
+            <div class="form-group" id="copperDetailsGroup" style="display:none;">
+                <label>بيان النحاسية:</label>
+                <input type="text" id="editExtCopperLabel" placeholder="مثال: نحاسية المصرف">
+            </div>
+        </div>
+
+        <div id="vacantReasonBlock" style="display:none; background:#ecfdf5; padding:12px; border-radius:14px; margin-bottom:14px; border:1px solid #a7f3d0;">
+            <div class="form-group">
+                <label>سبب الفضاوة / الإتاحة:</label>
+                <select id="editExtVacateReason">
+                    <option value="إلغاء اشتراك">إلغاء اشتراك</option>
+                    <option value="نقل اشتراك">نقل اشتراك</option>
+                    <option value="تم إصلاح العطل">تم إصلاح العطل (تحويل من عاطل إلى شاغر)</option>
+                    <option value="تحرير خط">تحرير خط</option>
+                    <option value="أخرى">سبب آخر</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="faultyFieldsBlock" style="display:none; background:#fff7ed; padding:12px; border-radius:14px; margin-bottom:14px; border:1px solid #fed7aa;">
+            <div class="form-group">
+                <label>مشكلة الداخل العطلان (إجباري عند العطل *):</label>
+                <input type="text" id="editExtFaultIssue" placeholder="مثال: أرضي / قطع كبل / تشويش / تماس">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>ملاحظة عامة (إجباري *):</label>
+            <input type="text" id="editExtNote" placeholder="اكتب ملاحظة توضيحية...">
+        </div>
+
+        <button type="button" class="btn-primary" id="btnSaveExtChange">حفظ التعديل</button>
+    </div>
+</div>
+
+<!-- Modal 5: Logs -->
+<div class="modal-overlay" id="logsModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>سجل التغييرات والحركات الكامل</h3>
+            <button type="button" class="close-btn" data-close="logsModal">×</button>
+        </div>
+        <div style="overflow-x:auto;">
+            <table class="log-table">
+                <thead>
+                    <tr>
+                        <th>الوقت</th>
+                        <th>الشخص</th>
+                        <th>المجموعة</th>
+                        <th>العلبة والداخل</th>
+                        <th>الحالة</th>
+                        <th>التفاصيل والسبب</th>
+                    </tr>
+                </thead>
+                <tbody id="logsTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 6: Manage Users (Admin) -->
+<div class="modal-overlay" id="usersModal">
+    <div class="modal-box small">
+        <div class="modal-header">
+            <h3>إدارة الأشخاص وكلمات المرور</h3>
+            <button type="button" class="close-btn" data-close="usersModal">×</button>
+        </div>
+        <div class="inline-error" id="usersError"></div>
+        <div class="form-group">
+            <label>الاسم الكامل للشخص:</label>
+            <input type="text" id="newPersonFullName" placeholder="مثال: حسن">
+        </div>
+        <div class="form-group">
+            <label>اسم المستخدم للدخول (Username):</label>
+            <input type="text" id="newPersonUsername" placeholder="مثال: hasan">
+        </div>
+        <div class="form-group">
+            <label>كلمة المرور (Password):</label>
+            <input type="text" id="newPersonPassword" placeholder="مثال: 12345">
+        </div>
+        <button type="button" class="btn-primary" style="margin-bottom:16px;" id="btnAddPersonUser">إضافة المستخدم</button>
+        <div id="usersListContainer"></div>
+    </div>
+</div>
+
+<script>
+(function() {
+    var FIREBASE_DB_URL = "https://shin-center-default-rtdb.firebaseio.com";
+
+    var DEFAULT_ADMIN = {
+        id: "admin",
+        fullName: "أشرف بالا (الأدمن الرئيسي)",
+        username: "admin",
+        password: "123",
+        role: "admin"
+    };
+
+    var memoryGroups = [];
+    var memoryLogs = [];
+    var memoryUsers = [DEFAULT_ADMIN];
+    var currentUser = null;
+
+    var currentGroupId = null;
+    var currentExtIndex = null;
+
+    function byId(id) { return document.getElementById(id); }
+
+    function showToast(msg) {
+        var toast = byId('toastMsg');
+        toast.innerText = msg;
+        toast.style.display = 'block';
+        setTimeout(function() { toast.style.display = 'none'; }, 2600);
+    }
+
+    function openModal(id) {
+        var el = byId(id);
+        if (el) el.style.display = 'flex';
+    }
+
+    function closeModal(id) {
+        var el = byId(id);
+        if (el) el.style.display = 'none';
+    }
+
+    function escapeHtml(text) {
+        var div = document.createElement('div');
+        div.innerText = text == null ? '' : String(text);
+        return div.innerHTML;
+    }
+
+    function statusLabel(st) {
+        if (st === 'vacant') return 'شاغر';
+        if (st === 'reserved') return 'محجوز';
+        if (st === 'faulty') return 'عاطل';
+        return st;
+    }
+
+    function setSyncBadge(state, text) {
+        var el = byId('syncStatus');
+        if (!el) return;
+        el.className = 'sync-badge ' + state;
+        el.innerText = text;
+    }
+
+    function loadLocalFallback() {
+        try {
+            var lg = localStorage.getItem('shin_v4_groups');
+            var ll = localStorage.getItem('shin_v4_logs');
+            var lu = localStorage.getItem('shin_v4_users');
+            if (lg) memoryGroups = JSON.parse(lg);
+            if (ll) memoryLogs = JSON.parse(ll);
+            if (lu) {
+                var parsedUsers = JSON.parse(lu);
+                if (Array.isArray(parsedUsers) && parsedUsers.length > 0) memoryUsers = parsedUsers;
+            }
+        } catch (e) {}
+        ensureAdminExists();
+    }
+
+    function ensureAdminExists() {
+        var hasAdmin = memoryUsers.some(function(u) { return u.id === 'admin'; });
+        if (!hasAdmin) {
+            memoryUsers.unshift(DEFAULT_ADMIN);
+        }
+    }
+
+    async function fetchCloudData() {
+        setSyncBadge('loading', '⏳ جاري المزامنة...');
+        try {
+            var res = await fetch(FIREBASE_DB_URL + '/shin_data.json');
+            var data = await res.json();
+            if (data && typeof data === 'object') {
+                memoryGroups = Array.isArray(data.groups) ? data.groups : [];
+                memoryLogs = Array.isArray(data.logs) ? data.logs : [];
+                if (Array.isArray(data.users) && data.users.length > 0) {
+                    memoryUsers = data.users;
+                }
+            }
+            ensureAdminExists();
+            localStorage.setItem('shin_v4_groups', JSON.stringify(memoryGroups));
+            localStorage.setItem('shin_v4_logs', JSON.stringify(memoryLogs));
+            localStorage.setItem('shin_v4_users', JSON.stringify(memoryUsers));
+            setSyncBadge('', '🟢 متصل أونلاين');
+        } catch (err) {
+            loadLocalFallback();
+            setSyncBadge('error', '🔴 وضع محلي (تعذر السحابة)');
+        }
+        if (currentUser) {
+            applyRoleUI();
+            renderAll();
+        }
+    }
+
+    async function saveData() {
+        ensureAdminExists();
+        localStorage.setItem('shin_v4_groups', JSON.stringify(memoryGroups));
+        localStorage.setItem('shin_v4_logs', JSON.stringify(memoryLogs));
+        localStorage.setItem('shin_v4_users', JSON.stringify(memoryUsers));
+        if (currentUser) renderAll();
+
+        setSyncBadge('loading', '⏳ جاري الحفظ...');
+        try {
+            await fetch(FIREBASE_DB_URL + '/shin_data.json', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    groups: memoryGroups,
+                    logs: memoryLogs,
+                    users: memoryUsers
+                })
+            });
+            setSyncBadge('', '🟢 محفوظ أونلاين');
+        } catch (err) {
+            setSyncBadge('error', '🔴 محفوظ محلياً فقط');
+        }
+    }
+
+    // --- Authentication ---
+    function handleLogin() {
+        var uName = byId('loginUsername').value.trim();
+        var uPass = byId('loginPassword').value.trim();
+        var errBox = byId('loginError');
+        errBox.style.display = 'none';
+
+        if (!uName || !uPass) {
+            errBox.innerText = 'يرجى إدخال اسم المستخدم وكلمة المرور.';
+            errBox.style.display = 'block';
+            return;
+        }
+
+        ensureAdminExists();
+        var matched = memoryUsers.find(function(u) {
+            return (u.username || '').toLowerCase() === uName.toLowerCase() && (u.password || '') === uPass;
+        });
+
+        if (!matched) {
+            errBox.innerText = 'اسم المستخدم أو كلمة المرور غير صحيحة.';
+            errBox.style.display = 'block';
+            return;
+        }
+
+        currentUser = matched;
+        sessionStorage.setItem('shin_logged_user_id', matched.id);
+        byId('loginScreen').style.display = 'none';
+        byId('mainAppContainer').style.display = 'block';
+        applyRoleUI();
+        renderAll();
+        showToast('أهلاً بك ' + (matched.fullName || matched.username));
+    }
+
+    function handleLogout() {
+        currentUser = null;
+        sessionStorage.removeItem('shin_logged_user_id');
+        byId('loginUsername').value = '';
+        byId('loginPassword').value = '';
+        byId('loginError').style.display = 'none';
+        byId('mainAppContainer').style.display = 'none';
+        byId('loginScreen').style.display = 'flex';
+    }
+
+    function applyRoleUI() {
+        if (!currentUser) return;
+        var isAdmin = currentUser.role === 'admin';
+        byId('currentUserBadge').innerText = 'المستخدم: ' + (currentUser.fullName || currentUser.username);
+        var adminEls = document.querySelectorAll('.admin-only');
+        adminEls.forEach(function(el) {
+            if (isAdmin) el.classList.remove('hidden-role');
+            else el.classList.add('hidden-role');
+        });
+    }
+
+    // --- Group Creation ---
+    function openAddGroupModal() {
+        if (!currentUser || currentUser.role !== 'admin') return;
+        byId('addGroupError').style.display = 'none';
+        byId('newGroupName').value = '';
+        byId('newGroupLocation').value = '';
+        byId('newGroupBoxesCount').value = '2';
+        byId('newGroupExtensionsCount').value = '20';
+        byId('newGroupDefaultStatus').value = 'vacant';
+        rebuildBoxLocationsInputs();
+        openModal('addGroupModal');
+    }
+
+    function rebuildBoxLocationsInputs() {
+        var count = parseInt(byId('newGroupBoxesCount').value, 10);
+        if (isNaN(count) || count < 1) count = 1;
+        if (count > 50) count = 50;
+        var container = byId('boxLocationsContainer');
+        container.innerHTML = '';
+        for (var b = 1; b <= count; b++) {
+            var div = document.createElement('div');
+            div.innerHTML =
+                '<label style="font-size:12px; font-weight:700; display:block; margin-bottom:4px;">موقع علبة #' + b + ':</label>' +
+                '<input type="text" class="box-loc-input" data-box="' + b + '" placeholder="مثال: قرب المخفر / بناء كذا">';
+            container.appendChild(div);
+        }
+    }
+
+    function createGroup() {
+        var name = byId('newGroupName').value.trim();
+        var location = byId('newGroupLocation').value.trim() || 'غير محدد';
+        var boxesCount = parseInt(byId('newGroupBoxesCount').value, 10);
+        var extCount = parseInt(byId('newGroupExtensionsCount').value, 10);
+        var defaultStatus = byId('newGroupDefaultStatus').value;
+
+        if (!name || isNaN(boxesCount) || boxesCount < 1 || isNaN(extCount) || extCount < 1) {
+            var err = byId('addGroupError');
+            err.innerText = 'يرجى إدخال اسم المجموعة وعدد العلب وعدد الدواخل بشكل صحيح.';
+            err.style.display = 'block';
+            return;
+        }
+
+        var boxes = [];
+        var locInputs = document.querySelectorAll('.box-loc-input');
+        for (var b = 1; b <= boxesCount; b++) {
+            var locVal = locInputs[b - 1] ? locInputs[b - 1].value.trim() : '';
+            boxes.push({
+                boxNumber: b,
+                boxName: 'علبة #' + b,
+                location: locVal || 'غير محدد'
+            });
+        }
+
+        var extensions = [];
+        for (var i = 1; i <= extCount; i++) {
+            var assignedBox = ((i - 1) % boxesCount) + 1;
+            extensions.push({
+                number: i,
+                boxNumber: assignedBox,
+                status: defaultStatus,
+                reserveType: '',
+                phoneNumber: '',
+                copperLabel: '',
+                faultIssue: '',
+                lastReason: defaultStatus === 'faulty' ? 'عطل مبدئي' : 'إنشاء أولي',
+                lastUpdatedBy: currentUser.fullName || currentUser.username
+            });
+        }
+
+        memoryGroups.push({
+            id: Date.now() + Math.floor(Math.random() * 10000),
+            name: name,
+            location: location,
+            boxes: boxes,
+            extensions: extensions
+        });
+
+        memoryLogs.unshift({
+            date: new Date().toLocaleString('ar-SY'),
+            userName: currentUser.fullName || currentUser.username,
+            groupName: name,
+            locationLabel: 'إضافة مجموعة (' + boxesCount + ' علب / ' + extCount + ' داخل)',
+            status: 'جديد',
+            reason: 'موقع المجموعة: ' + location
+        });
+
+        closeModal('addGroupModal');
+        saveData();
+        showToast('تمت إضافة المجموعة "' + name + '" بنجاح');
+    }
+
+    function deleteGroup(groupId) {
+        if (!currentUser || currentUser.role !== 'admin') return;
+        if (!confirm('هل أنت متأكد من حذف هذه المجموعة؟')) return;
+        var grp = memoryGroups.find(function(g) { return g.id === groupId; });
+        memoryGroups = memoryGroups.filter(function(g) { return g.id !== groupId; });
+        if (grp) {
+            memoryLogs.unshift({
+                date: new Date().toLocaleString('ar-SY'),
+                userName: currentUser.fullName || currentUser.username,
+                groupName: grp.name,
+                locationLabel: 'حذف مجموعة',
+                status: 'محذوف',
+                reason: 'تم حذف المجموعة بواسطة الأدمن'
+            });
+        }
+        saveData();
+        showToast('تم حذف المجموعة');
+    }
+
+    // --- Add Single Extension ---
+    function openAddExtensionModal() {
+        if (memoryGroups.length === 0) {
+            showToast('يرجى إضافة مجموعة أولاً قبل إضافة داخل');
+            return;
+        }
+        byId('addExtError').style.display = 'none';
+        var sel = byId('addExtGroupSelect');
+        sel.innerHTML = memoryGroups.map(function(g) {
+            return '<option value="' + g.id + '">' + escapeHtml(g.name) + ' (' + escapeHtml(g.location || '') + ')</option>';
+        }).join('');
+        populateAddExtBoxes();
+        byId('addExtNumberInput').value = '';
+        byId('addExtNoteInput').value = '';
+        openModal('addExtModal');
+    }
+
+    function populateAddExtBoxes() {
+        var gid = parseInt(byId('addExtGroupSelect').value, 10);
+        var grp = memoryGroups.find(function(g) { return g.id === gid; });
+        var boxSel = byId('addExtBoxSelect');
+        if (!grp) return;
+        boxSel.innerHTML = grp.boxes.map(function(b) {
+            return '<option value="' + b.boxNumber + '">' + escapeHtml(b.boxName) + ' - ' + escapeHtml(b.location) + '</option>';
+        }).join('');
+    }
+
+    function addSingleExtension() {
+        var gid = parseInt(byId('addExtGroupSelect').value, 10);
+        var bNum = parseInt(byId('addExtBoxSelect').value, 10);
+        var st = byId('addExtStatusSelect').value;
+        var note = byId('addExtNoteInput').value.trim();
+        var grp = memoryGroups.find(function(g) { return g.id === gid; });
+        if (!grp) return;
+
+        var maxNum = grp.extensions.reduce(function(m, e) { return e.number > m ? e.number : m; }, 0);
+        var customNum = parseInt(byId('addExtNumberInput').value, 10);
+        var extNum = (!isNaN(customNum) && customNum > 0) ? customNum : (maxNum + 1);
+
+        grp.extensions.push({
+            number: extNum,
+            boxNumber: bNum,
+            status: st,
+            reserveType: '',
+            phoneNumber: '',
+            copperLabel: '',
+            faultIssue: st === 'faulty' ? (note || 'عطل') : '',
+            lastReason: note || 'إضافة داخل جديد',
+            lastUpdatedBy: currentUser.fullName || currentUser.username
+        });
+
+        memoryLogs.unshift({
+            date: new Date().toLocaleString('ar-SY'),
+            userName: currentUser.fullName || currentUser.username,
+            groupName: grp.name,
+            locationLabel: 'علبة #' + bNum + ' — داخل #' + extNum,
+            status: statusLabel(st),
+            reason: note || 'إضافة داخل جديد'
+        });
+
+        closeModal('addExtModal');
+        saveData();
+        showToast('تمت إضافة الداخل #' + extNum);
+    }
+
+    // --- Render Dashboard ---
+    function renderAll() {
+        renderGroups();
+        renderRecentActivity();
+    }
+
+    function renderGroups() {
+        var grid = byId('groupsGrid');
+        var q = byId('searchInput').value.trim().toLowerCase();
+        grid.innerHTML = '';
+
+        var totalVacant = 0, totalReserved = 0, totalFaulty = 0;
+
+        memoryGroups.forEach(function(group) {
+            var vCount = group.extensions.filter(function(e) { return e.status === 'vacant'; }).length;
+            var rCount = group.extensions.filter(function(e) { return e.status === 'reserved'; }).length;
+            var fCount = group.extensions.filter(function(e) { return e.status === 'faulty'; }).length;
+            var total = group.extensions.length;
+
+            totalVacant += vCount;
+            totalReserved += rCount;
+            totalFaulty += fCount;
+
+            var matchSearch = !q ||
+                group.name.toLowerCase().indexOf(q) !== -1 ||
+                (group.location && group.location.toLowerCase().indexOf(q) !== -1);
+            if (!matchSearch) return;
+
+            var pct = total > 0 ? (vCount / total) * 100 : 0;
+            var card = document.createElement('div');
+            card.className = 'group-card';
+
+            var topHtml =
+                '<div class="group-card-top">' +
+                    '<div>' +
+                        '<div class="group-name">' + escapeHtml(group.name) + '</div>' +
+                        '<div class="group-loc">📍 موقع المجموعة: ' + escapeHtml(group.location || 'غير محدد') + '</div>' +
+                        '<div class="group-meta">' +
+                            'العلب: <strong>' + group.boxes.length + '</strong> | دواخل المجموعة: <strong>' + total + '</strong><br>' +
+                            'محجوز: <strong>' + rCount + '</strong> | عاطل: <strong style="color:#ea580c;">' + fCount + '</strong>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="mini-counts">' +
+                        '<div class="vacant-badge ' + (vCount === 0 ? 'zero' : '') + '"><strong>' + vCount + '</strong><span>شاغر</span></div>' +
+                        '<div class="faulty-badge">عاطل: ' + fCount + '</div>' +
+                    '</div>' +
+                '</div>';
+
+            var bottomDiv = document.createElement('div');
+            bottomDiv.innerHTML = '<div class="progress-bar-bg"><div class="progress-bar-fill" style="width:' + pct + '%"></div></div>';
+
+            var actionsDiv = document.createElement('div');
+            actionsDiv.className = 'group-card-actions';
+
+            var manageBtn = document.createElement('button');
+            manageBtn.type = 'button';
+            manageBtn.className = 'btn-manage';
+            manageBtn.innerText = 'عرض العلب والدواخل';
+            manageBtn.addEventListener('click', function() { openGroupDetails(group.id); });
+            actionsDiv.appendChild(manageBtn);
+
+            if (currentUser && currentUser.role === 'admin') {
+                var delBtn = document.createElement('button');
+                delBtn.type = 'button';
+                delBtn.className = 'btn-delete-group';
+                delBtn.innerText = '🗑️';
+                delBtn.addEventListener('click', function() { deleteGroup(group.id); });
+                actionsDiv.appendChild(delBtn);
+            }
+
+            bottomDiv.appendChild(actionsDiv);
+            card.innerHTML = topHtml;
+            card.appendChild(bottomDiv);
+            grid.appendChild(card);
+        });
+
+        byId('totalGroupsStat').innerText = memoryGroups.length;
+        byId('totalVacantStat').innerText = totalVacant;
+        byId('totalReservedStat').innerText = totalReserved;
+        byId('totalFaultyStat').innerText = totalFaulty;
+
+        if (memoryGroups.length === 0) {
+            grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:35px; color:var(--text-muted);">لا توجد مجموعات مسجلة حالياً.</div>';
+        }
+    }
+
+    function renderRecentActivity() {
+        var box = byId('recentActivityList');
+        if (!memoryLogs || memoryLogs.length === 0) {
+            box.innerHTML = '<div style="color:var(--text-muted); font-size:13px;">لا توجد حركات مسجلة بعد.</div>';
+            return;
+        }
+        box.innerHTML = memoryLogs.slice(0, 6).map(function(log) {
+            return '<div class="activity-item">' +
+                '<strong>' + escapeHtml(log.userName || 'مستخدم') + '</strong> قام بتعديل ' +
+                '<strong>' + escapeHtml(log.locationLabel) + '</strong> في مجموعة ' +
+                '<strong>' + escapeHtml(log.groupName) + '</strong> — الحالة: <strong>' + escapeHtml(log.status) + '</strong> ' +
+                '<span style="color:var(--text-muted);">(' + escapeHtml(log.reason) + ' — ' + escapeHtml(log.date) + ')</span>' +
+            '</div>';
+        }).join('');
+    }
+
+    // --- Group Details & Extensions ---
+    function openGroupDetails(groupId) {
+        currentGroupId = groupId;
+        var grp = memoryGroups.find(function(g) { return g.id === groupId; });
+        if (!grp) return;
+
+        var vCount = grp.extensions.filter(function(e) { return e.status === 'vacant'; }).length;
+        var rCount = grp.extensions.filter(function(e) { return e.status === 'reserved'; }).length;
+        var fCount = grp.extensions.filter(function(e) { return e.status === 'faulty'; }).length;
+
+        byId('detailGroupTitle').innerText = grp.name + ' (' + (grp.location || '') + ')';
+        byId('detailGroupSummary').innerText =
+            'العلب: ' + grp.boxes.length + ' | دواخل المجموعة: ' + grp.extensions.length +
+            ' | شاغر: ' + vCount + ' | محجوز: ' + rCount + ' | عاطل: ' + fCount;
+
+        var container = byId('extensionsByBoxContainer');
+        container.innerHTML = '';
+
+        grp.boxes.forEach(function(box) {
+            var boxExts = [];
+            grp.extensions.forEach(function(ext, idx) {
+                if (ext.boxNumber === box.boxNumber) {
+                    boxExts.push({ ext: ext, index: idx });
+                }
+            });
+
+            var bVacant = boxExts.filter(function(x) { return x.ext.status === 'vacant'; }).length;
+            var bFaulty = boxExts.filter(function(x) { return x.ext.status === 'faulty'; }).length;
+
+            var sec = document.createElement('div');
+            sec.className = 'box-section';
+            sec.innerHTML =
+                '<div class="box-title">' +
+                    '<span>📦 ' + escapeHtml(box.boxName) + ' — <small style="color:#475569;">موقع العلبة: ' + escapeHtml(box.location || 'غير محدد') + '</small></span>' +
+                    '<span style="font-size:13px; color:#0d8a53;">شاغر: ' + bVacant + ' | عاطل: ' + bFaulty + '</span>' +
+                '</div>';
+
+            var grid = document.createElement('div');
+            grid.className = 'ext-grid';
+
+            boxExts.forEach(function(entry) {
+                var item = entry.ext;
+                var detailText = '';
+                if (item.status === 'reserved') {
+                    if (item.reserveType === 'copper') {
+                        detailText = 'نحاسية: ' + (item.copperLabel || 'نحاسية المصرف');
+                    } else {
+                        detailText = 'رقم: ' + (item.phoneNumber || 'غير محدد');
+                    }
+                } else if (item.status === 'faulty') {
+                    detailText = 'عطل: ' + (item.faultIssue || item.lastReason || '');
+                } else {
+                    detailText = item.lastReason || 'شاغر';
+                }
+
+                var card = document.createElement('div');
+                card.className = 'ext-item ' + item.status;
+                card.addEventListener('click', function() { openEditExtModal(entry.index); });
+                card.innerHTML =
+                    '<div class="ext-num">داخل #' + item.number + '</div>' +
+                    '<div class="ext-box-tag">' + escapeHtml(box.boxName) + '</div>' +
+                    '<div class="ext-status">' + statusLabel(item.status) + '</div>' +
+                    '<div class="ext-detail">' + escapeHtml(detailText) + '</div>';
+                grid.appendChild(card);
+            });
+
+            sec.appendChild(grid);
+            container.appendChild(sec);
+        });
+
+        openModal('groupDetailsModal');
+    }
+
+    function openEditExtModal(extIndex) {
+        currentExtIndex = extIndex;
+        var grp = memoryGroups.find(function(g) { return g.id === currentGroupId; });
+        var ext = grp.extensions[extIndex];
+        var box = grp.boxes.find(function(b) { return b.boxNumber === ext.boxNumber; });
+
+        byId('editExtError').style.display = 'none';
+        byId('editExtTitle').innerText = 'تعديل داخل #' + ext.number;
+        byId('editExtLocationInfo').innerHTML =
+            '<span>المجموعة: ' + escapeHtml(grp.name) + '</span>' +
+            '<span>العلبة: ' + escapeHtml(box ? box.boxName : ('علبة #' + ext.boxNumber)) + '</span>' +
+            '<span>الحالة الحالية: ' + statusLabel(ext.status) + '</span>';
+
+        byId('editExtStatus').value = ext.status;
+
+        var gSel = byId('editExtTargetGroup');
+        gSel.innerHTML = memoryGroups.map(function(g) {
+            return '<option value="' + g.id + '"' + (g.id === grp.id ? ' selected' : '') + '>' + escapeHtml(g.name) + '</option>';
+        }).join('');
+
+        populateTargetBoxes(ext.boxNumber);
+        byId('editExtNewNumber').value = ext.number;
+
+        byId('editExtReserveType').value = ext.reserveType || 'phone';
+        byId('editExtPhoneNumber').value = ext.phoneNumber || '';
+        byId('editExtCopperLabel').value = ext.copperLabel || 'نحاسية المصرف';
+        byId('editExtFaultIssue').value = ext.faultIssue || '';
+        byId('editExtNote').value = '';
+
+        toggleReserveTypeUI();
+        onStatusChangeUI();
+        openModal('editExtModal');
+    }
+
+    function populateTargetBoxes(selectedBoxNum) {
+        var targetGid = parseInt(byId('editExtTargetGroup').value, 10);
+        var targetGrp = memoryGroups.find(function(g) { return g.id === targetGid; });
+        var bSel = byId('editExtTargetBox');
+        if (!targetGrp) return;
+        bSel.innerHTML = targetGrp.boxes.map(function(b) {
+            var sel = (selectedBoxNum && b.boxNumber === selectedBoxNum) ? ' selected' : '';
+            return '<option value="' + b.boxNumber + '"' + sel + '>' + escapeHtml(b.boxName) + ' (' + escapeHtml(b.location) + ')</option>';
+        }).join('');
+    }
+
+    function toggleReserveTypeUI() {
+        var rType = byId('editExtReserveType').value;
+        byId('phoneNumberGroup').style.display = rType === 'phone' ? 'block' : 'none';
+        byId('copperDetailsGroup').style.display = rType === 'copper' ? 'block' : 'none';
+    }
+
+    function onStatusChangeUI() {
+        var st = byId('editExtStatus').value;
+        byId('reservedFieldsBlock').style.display = st === 'reserved' ? 'block' : 'none';
+        byId('vacantReasonBlock').style.display = st === 'vacant' ? 'block' : 'none';
+        byId('faultyFieldsBlock').style.display = st === 'faulty' ? 'block' : 'none';
+    }
+
+    function saveExtensionChange() {
+        var note = byId('editExtNote').value.trim();
+        var newStatus = byId('editExtStatus').value;
+        var faultIssue = byId('editExtFaultIssue').value.trim();
+
+        if (!note) {
+            var err = byId('editExtError');
+            err.innerText = 'حقل الملاحظة إجباري.';
+            err.style.display = 'block';
+            return;
+        }
+        if (newStatus === 'faulty' && !faultIssue) {
+            var err2 = byId('editExtError');
+            err2.innerText = 'يرجى تحديد مشكلة الداخل العطلان.';
+            err2.style.display = 'block';
+            return;
+        }
+
+        var oldGroup = memoryGroups.find(function(g) { return g.id === currentGroupId; });
+        var ext = oldGroup.extensions[currentExtIndex];
+        var oldNum = ext.number;
+        var oldBox = ext.boxNumber;
+
+        var targetGid = parseInt(byId('editExtTargetGroup').value, 10);
+        var targetGroup = memoryGroups.find(function(g) { return g.id === targetGid; });
+        var targetBox = parseInt(byId('editExtTargetBox').value, 10);
+        var parsedNewNum = parseInt(byId('editExtNewNumber').value, 10);
+        var newNum = (!isNaN(parsedNewNum) && parsedNewNum > 0) ? parsedNewNum : oldNum;
+
+        var reserveType = byId('editExtReserveType').value;
+        var phoneNum = byId('editExtPhoneNumber').value.trim();
+        var copperLbl = byId('editExtCopperLabel').value.trim() || 'نحاسية المصرف';
+        var vacateReason = byId('editExtVacateReason').value;
+
+        var summaryParts = [];
+        if (newStatus === 'reserved') {
+            ext.reserveType = reserveType;
+            ext.phoneNumber = reserveType === 'phone' ? phoneNum : '';
+            ext.copperLabel = reserveType === 'copper' ? copperLbl : '';
+            ext.faultIssue = '';
+            summaryParts.push(reserveType === 'copper' ? ('نحاسية: ' + copperLbl) : ('رقم محجوز: ' + (phoneNum || 'غير محدد')));
+        } else if (newStatus === 'faulty') {
+            ext.faultIssue = faultIssue;
+            ext.reserveType = '';
+            ext.phoneNumber = '';
+            ext.copperLabel = '';
+            summaryParts.push('مشكلة العطل: ' + faultIssue);
+        } else {
+            ext.reserveType = '';
+            ext.phoneNumber = '';
+            ext.copperLabel = '';
+            ext.faultIssue = '';
+            summaryParts.push('سبب الفضاوة: ' + vacateReason);
+        }
+
+        summaryParts.push('ملاحظة: ' + note);
+        var fullReason = summaryParts.join(' | ');
+
+        ext.number = newNum;
+        ext.boxNumber = targetBox;
+        ext.status = newStatus;
+        ext.lastReason = fullReason;
+        ext.lastUpdatedBy = currentUser.fullName || currentUser.username;
+
+        if (targetGroup.id !== oldGroup.id) {
+            oldGroup.extensions.splice(currentExtIndex, 1);
+            targetGroup.extensions.push(ext);
+        }
+
+        var movedText = 'تم تعديل الداخل رقم #' + oldNum + ' في المجموعة ' + oldGroup.name + ' العلبة #' + oldBox +
+            ' إلى الداخل #' + newNum + ' في المجموعة ' + targetGroup.name + ' العلبة #' + targetBox;
+
+        memoryLogs.unshift({
+            date: new Date().toLocaleString('ar-SY'),
+            userName: currentUser.fullName || currentUser.username,
+            groupName: targetGroup.name,
+            locationLabel: movedText,
+            status: statusLabel(newStatus),
+            reason: fullReason
+        });
+
+        saveData();
+        closeModal('editExtModal');
+        openGroupDetails(targetGroup.id);
+        showToast('تم حفظ التعديل');
+    }
+
+    // --- Logs & Export ---
+    function openLogsModal() {
+        var tbody = byId('logsTableBody');
+        tbody.innerHTML = memoryLogs.length === 0
+            ? '<tr><td colspan="6" style="text-align:center; padding:20px;">لا توجد حركات مسجلة.</td></tr>'
+            : memoryLogs.map(function(log) {
+                return '<tr>' +
+                    '<td dir="ltr">' + escapeHtml(log.date) + '</td>' +
+                    '<td><strong>' + escapeHtml(log.userName || '-') + '</strong></td>' +
+                    '<td>' + escapeHtml(log.groupName) + '</td>' +
+                    '<td>' + escapeHtml(log.locationLabel) + '</td>' +
+                    '<td><strong>' + escapeHtml(log.status) + '</strong></td>' +
+                    '<td>' + escapeHtml(log.reason) + '</td>' +
+                '</tr>';
+            }).join('');
+        openModal('logsModal');
+    }
+
+    function exportToExcelCSV() {
+        var rows = [
+            ['المجموعة', 'موقع المجموعة', 'العلبة', 'موقع العلبة', 'رقم الداخل', 'الحالة', 'الرقم المحجوز / النحاسية', 'مشكلة العطل / سبب الفضاوة', 'آخر تعديل بواسطة']
+        ];
+
+        memoryGroups.forEach(function(g) {
+            g.extensions.forEach(function(ext) {
+                var box = g.boxes.find(function(b) { return b.boxNumber === ext.boxNumber; });
+                var resInfo = ext.status === 'reserved'
+                    ? (ext.reserveType === 'copper' ? ('نحاسية: ' + (ext.copperLabel || 'نحاسية المصرف')) : (ext.phoneNumber || ''))
+                    : '';
+                var issueInfo = ext.status === 'faulty' ? (ext.faultIssue || ext.lastReason || '') : (ext.lastReason || '');
+                rows.push([
+                    g.name,
+                    g.location || '',
+                    box ? box.boxName : ('علبة #' + ext.boxNumber),
+                    box ? (box.location || '') : '',
+                    ext.number,
+                    statusLabel(ext.status),
+                    resInfo,
+                    issueInfo,
+                    ext.lastUpdatedBy || ''
+                ]);
+            });
+        });
+
+        var csvContent = '\uFEFF' + rows.map(function(r) {
+            return r.map(function(cell) {
+                var s = String(cell == null ? '' : cell).replace(/"/g, '""');
+                return '"' + s + '"';
+            }).join(',');
+        }).join('\n');
+
+        var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'shin_center_groups_By_Ashraf_Bala.csv';
+        a.click();
+        showToast('تم تصدير ملف Excel بنجاح');
+    }
+
+    // --- Users / People Management (Admin) ---
+    function openUsersModal() {
+        if (!currentUser || currentUser.role !== 'admin') return;
+        byId('usersError').style.display = 'none';
+        byId('newPersonFullName').value = '';
+        byId('newPersonUsername').value = '';
+        byId('newPersonPassword').value = '';
+        renderUsersList();
+        openModal('usersModal');
+    }
+
+    function addPersonUser() {
+        var fullName = byId('newPersonFullName').value.trim();
+        var username = byId('newPersonUsername').value.trim();
+        var password = byId('newPersonPassword').value.trim();
+        var errBox = byId('usersError');
+        errBox.style.display = 'none';
+
+        if (!fullName || !username || !password) {
+            errBox.innerText = 'يرجى تعبئة الاسم الكامل واسم المستخدم وكلمة المرور.';
+            errBox.style.display = 'block';
+            return;
+        }
+
+        var exists = memoryUsers.some(function(u) {
+            return (u.username || '').toLowerCase() === username.toLowerCase();
+        });
+        if (exists) {
+            errBox.innerText = 'اسم المستخدم موجود مسبقاً، اختر اسماً آخر.';
+            errBox.style.display = 'block';
+            return;
+        }
+
+        memoryUsers.push({
+            id: 'user_' + Date.now(),
+            fullName: fullName,
+            username: username,
+            password: password,
+            role: 'editor'
+        });
+
+        byId('newPersonFullName').value = '';
+        byId('newPersonUsername').value = '';
+        byId('newPersonPassword').value = '';
+        saveData();
+        renderUsersList();
+        showToast('تمت إضافة المستخدم: ' + fullName);
+    }
+
+    function deletePersonUser(uid) {
+        if (uid === 'admin') return;
+        memoryUsers = memoryUsers.filter(function(u) { return u.id !== uid; });
+        saveData();
+        renderUsersList();
+        showToast('تم حذف المستخدم');
+    }
+
+    function renderUsersList() {
+        var c = byId('usersListContainer');
+        c.innerHTML = '';
+        memoryUsers.forEach(function(u) {
+            var row = document.createElement('div');
+            row.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:10px 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; margin-bottom:8px; gap:8px;';
+
+            var info = document.createElement('div');
+            info.innerHTML =
+                '<strong>' + escapeHtml(u.fullName || u.username) + '</strong><br>' +
+                '<small style="color:#475569;">المستخدم: <b>' + escapeHtml(u.username) + '</b> | كلمة المرور: <b>' + escapeHtml(u.password) + '</b></small>';
+            row.appendChild(info);
+
+            if (u.role === 'admin') {
+                var badge = document.createElement('span');
+                badge.style.cssText = 'font-size:12px; color:#1d4ed8; font-weight:800;';
+                badge.innerText = 'أدمن';
+                row.appendChild(badge);
+            } else {
+                var delBtn = document.createElement('button');
+                delBtn.type = 'button';
+                delBtn.className = 'btn-secondary';
+                delBtn.innerText = 'حذف';
+                delBtn.addEventListener('click', function() { deletePersonUser(u.id); });
+                row.appendChild(delBtn);
+            }
+            c.appendChild(row);
+        });
+    }
+
+    // --- Event Listeners Setup ---
+    function bindEvents() {
+        byId('loginSubmitBtn').addEventListener('click', handleLogin);
+        byId('loginPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+        byId('btnLogout').addEventListener('click', handleLogout);
+        byId('btnOpenUsers').addEventListener('click', openUsersModal);
+        byId('btnExportExcel').addEventListener('click', exportToExcelCSV);
+        byId('btnRefreshCloud').addEventListener('click', fetchCloudData);
+
+        byId('cardOpenAddGroup').addEventListener('click', openAddGroupModal);
+        byId('cardOpenAddExt').addEventListener('click', openAddExtensionModal);
+        byId('bannerOpenLogs').addEventListener('click', openLogsModal);
+        byId('searchInput').addEventListener('input', renderGroups);
+
+        byId('newGroupBoxesCount').addEventListener('input', rebuildBoxLocationsInputs);
+        byId('btnCreateGroup').addEventListener('click', createGroup);
+
+        byId('addExtGroupSelect').addEventListener('change', populateAddExtBoxes);
+        byId('btnSaveSingleExt').addEventListener('click', addSingleExtension);
+
+        byId('editExtStatus').addEventListener('change', onStatusChangeUI);
+        byId('editExtTargetGroup').addEventListener('change', function() { populateTargetBoxes(); });
+        byId('editExtReserveType').addEventListener('change', toggleReserveTypeUI);
+        byId('btnSaveExtChange').addEventListener('click', saveExtensionChange);
+
+        byId('btnAddPersonUser').addEventListener('click', addPersonUser);
+
+        document.querySelectorAll('[data-close]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                closeModal(btn.getAttribute('data-close'));
+            });
+        });
+    }
+
+    // Init
+    loadLocalFallback();
+    bindEvents();
+    fetchCloudData().then(function() {
+        var savedUid = sessionStorage.getItem('shin_logged_user_id');
+        if (savedUid) {
+            var found = memoryUsers.find(function(u) { return u.id === savedUid; });
+            if (found) {
+                currentUser = found;
+                byId('loginScreen').style.display = 'none';
+                byId('mainAppContainer').style.display = 'block';
+                applyRoleUI();
+                renderAll();
+            }
+        }
+    });
+})();
+</script>
+</body>
+</html>
